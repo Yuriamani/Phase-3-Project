@@ -28,9 +28,7 @@ class Booking:
     def delete_booking(booking_id):
         conn = get_db_connection()
         cursor = conn.cursor()
-
         cursor.execute("DELETE FROM bookings WHERE id = ?", (booking_id,))
-
         conn.commit()
         conn.close()
         print("Booking deleted successfully.")

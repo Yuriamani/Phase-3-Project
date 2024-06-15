@@ -69,25 +69,20 @@ def display_menu():
                 choice = int(get_input("\nEnter your choice: "))
                 # Find the chosen option in the menu_options list
                 selected_option = next((opt for opt in menu_options if opt[0] == choice), None)
-                
-
                 if not selected_option:
                     print("Invalid choice. Please try again.")   
                 else:    
                     selected_option[3]()
                     
-       
         except ValueError:
             print("Invalid input. Please enter a number.")
         except Exception as e:
             print(f"Error: {e}")
         finally:
             print('"You are always welcomed, come again,,,"\n')   
-
-
-            
+          
 def exited():
-    print("Exiting..." + "\n" +"Program Terminated.")
+    print("Exiting...")
     exit()      
 
 def delete_driver():
@@ -99,25 +94,22 @@ def delete_booking():
     Booking.delete_booking(booking_id)    
 
 def add_driver():
+    print(Fore.GREEN + "===== Driver's Registration =====" + Style.RESET_ALL)
     name = get_input(Fore.CYAN +"Enter driver's name: "+ Style.RESET_ALL)
     contact = get_input(Fore.CYAN +"Enter driver's contact: "+ Style.RESET_ALL)
     vehicle = get_input(Fore.CYAN +"Enter driver's vehicle: "+ Style.RESET_ALL)
     Driver.add_driver(name, contact, vehicle)
     print("Driver added successfully!")
    
-
 def book_ride():
     try:
         print(Fore.GREEN + "===== Booking a Ride =====" + Style.RESET_ALL)
         student_name = get_input(Fore.CYAN + "Enter student's name: " + Style.RESET_ALL)
         pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
         drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
-        
         # Lambda function for generating a random cost within a specified range
         generate_random_cost = lambda: random.uniform(10.0, 50.0)
         cost = generate_random_cost()
-
-        
         # Simulating random driver assignment (replace with actual logic if needed)
         drivers = Driver.get_all()
         if drivers:
@@ -126,14 +118,9 @@ def book_ride():
             # Assuming Booking.book_ride handles the database interaction
             Booking.book_ride(driver_id, student_name, pick_up, drop_off,cost, "individual")
             print(f"Driver assigned: {selected_driver['name']}")
-
         # Simulating ETA calculation (replace with actual logic if needed)
         eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
-        print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes")
-
-        
-        print(f"Ride booked successfully! Cost: ${cost:.2f}")
-
+        print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride booked successfully! Cost: ${cost:.2f}")
         # Ask user to rate the driver
         rate_driver(driver_id)
 
@@ -145,7 +132,6 @@ def book_ride():
 def book_ride_pooling():
     # Initialize an empty list to store students
     students = []
-    
     # Allow the user to input multiple students
     while True:
         student_name = get_input(Fore.CYAN + "Enter student's name (or 'done' to finish): " + Style.RESET_ALL)
@@ -155,12 +141,10 @@ def book_ride_pooling():
     
     pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
     drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
-    
     # Lambda function for generating a random cost within a specified range
     generate_random_cost = lambda: random.uniform(10.0, 50.0)
     # Generate a random cost for the ride pooling
     cost = generate_random_cost()  # Function to generate random cost
-
     # Simulating random driver assignment (replace with actual logic if needed)
     drivers = Driver.get_all()
     if drivers:
@@ -172,27 +156,25 @@ def book_ride_pooling():
         for student in students:
             Booking.book_ride(driver_id, student, pick_up, drop_off, cost, "pooling")
             print(f"Student '{student}' added to the ride pooling.")
-    
     # Simulating ETA calculation (replace with actual logic if needed)
     eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
-    print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes")
-    
-    print(f"Ride pooling booked successfully! Cost per student: ${cost:.2f}")
+    print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride pooling booked successfully! Cost per student: ${cost:.2f}")
 
 def rate_driver(driver_id):
-    try:
-        rating = int(get_input("Rate the driver (1-5 stars): "))
-        if rating < 1 or rating > 5:
-            print("Invalid rating. Please enter a number between 1 and 5.")
-            return
-
-        # Assuming Driver.rate_driver updates the driver's rating in the database
-        Driver.rate_driver(driver_id, rating)
-        print("Driver rated successfully!")
-    except ValueError:
-        print("Invalid input. Please enter a valid number.")
-    except Exception as e:
-        print(f"Error: {e}")
+    while True:    
+        try:
+            rating = int(get_input("Rate the driver (1-5 stars): "))
+            if 1 <= rating <= 5:
+                # Assuming Driver.rate_driver updates the driver's rating in the database
+                Driver.rate_driver(driver_id, rating)
+                print("Driver rated successfully!")
+                break
+            else:
+                    print("Invalid rating. Please enter a number between 0.0 and 5.0.")    
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+        except Exception as e:
+            print(f"Error: {e}")
 
 def display_drivers():
     try:
