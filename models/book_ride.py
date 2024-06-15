@@ -8,10 +8,10 @@ class Booking:
         self.drop_off = drop_off
 
     @staticmethod
-    def book_ride(driver_id,student_name, pick_up, drop_off):
+    def book_ride(driver_id,student_name, pick_up, drop_off,cost,ride_type):
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO bookings (driver_id,student_name, pick_up, drop_off) VALUES (?,?, ?, ?)", (driver_id,student_name, pick_up, drop_off))
+        cursor.execute("INSERT INTO bookings (driver_id,student_name, pick_up, drop_off,cost,ride_type) VALUES ( ?, ?, ?, ?, ?, ? )", (driver_id, student_name, pick_up, drop_off, cost,ride_type))
         conn.commit()
         conn.close()
 

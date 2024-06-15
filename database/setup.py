@@ -21,8 +21,10 @@ def create_tables():
             student_name TEXT NOT NULL,
             pick_up TEXT NOT NULL,
             drop_off TEXT NOT NULL,
+            cost REAL,       
             time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (driver_id) REFERENCES drivers (id)
+            ride_type TEXT,           
+            FOREIGN KEY (id) REFERENCES drivers (id)
         )
     ''')
 

@@ -43,18 +43,18 @@ def handle_ctrl_c():
         print("Input edited successfully!")
 
 def display_menu():
-    
 
     choice = 0
 
     menu_options = [
-    (1, Fore.BLUE, "Register as a Driver", add_driver),
+    (1, Fore.RED, "Register as a Driver", add_driver),
     (2, Fore.BLUE, "Instant Ride Requests", book_ride),
-    (3, Fore.BLUE, "Display Drivers", display_drivers),
-    (4, Fore.BLUE, "Display Bookings", display_bookings),
+    (3, Fore.RED, "Display Drivers", display_drivers),
+    (4, Fore.RED, "Display Bookings", display_bookings),
     (5, Fore.RED, "Delete Driver", delete_driver),
     (6, Fore.RED, "Delete Booking", delete_booking),
-    (7, Fore.RED, "Exit", exited)
+    (7, Fore.RED, "Exit", exited),
+    (8, Fore.YELLOW, "Book Ride (Ride Pooling)", book_ride_pooling)  # Option for ride pooling
 ]
     
     while choice != 7 :
@@ -112,14 +112,19 @@ def book_ride():
         student_name = get_input(Fore.CYAN + "Enter student's name: " + Style.RESET_ALL)
         pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
         drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
+        
+        # Lambda function for generating a random cost within a specified range
+        generate_random_cost = lambda: random.uniform(10.0, 50.0)
+        cost = generate_random_cost()
 
+        
         # Simulating random driver assignment (replace with actual logic if needed)
         drivers = Driver.get_all()
         if drivers:
             selected_driver = random.choice(drivers)
             driver_id = selected_driver['id']
             # Assuming Booking.book_ride handles the database interaction
-            Booking.book_ride(driver_id, student_name, pick_up, drop_off)
+            Booking.book_ride(driver_id, student_name, pick_up, drop_off,cost, "individual")
             print(f"Driver assigned: {selected_driver['name']}")
 
         # Simulating ETA calculation (replace with actual logic if needed)
@@ -127,7 +132,7 @@ def book_ride():
         print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes")
 
         
-        print("Ride booked successfully!")
+        print(f"Ride booked successfully! Cost: ${cost:.2f}")
 
         # Ask user to rate the driver
         rate_driver(driver_id)
@@ -137,6 +142,42 @@ def book_ride():
     except Exception as e:
         print(f"Error: {e}")
 
+def book_ride_pooling():
+    # Initialize an empty list to store students
+    students = []
+    
+    # Allow the user to input multiple students
+    while True:
+        student_name = get_input(Fore.CYAN + "Enter student's name (or 'done' to finish): " + Style.RESET_ALL)
+        if student_name.lower() == 'done':
+            break
+        students.append(student_name)
+    
+    pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
+    drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
+    
+    # Lambda function for generating a random cost within a specified range
+    generate_random_cost = lambda: random.uniform(10.0, 50.0)
+    # Generate a random cost for the ride pooling
+    cost = generate_random_cost()  # Function to generate random cost
+
+    # Simulating random driver assignment (replace with actual logic if needed)
+    drivers = Driver.get_all()
+    if drivers:
+        selected_driver = random.choice(drivers)
+        driver_id = selected_driver['id']
+        # Assuming Booking.book_ride handles the database interaction
+        print(f"Driver assigned: {selected_driver['name']}")
+        # Book the ride for each student in the list
+        for student in students:
+            Booking.book_ride(driver_id, student, pick_up, drop_off, cost, "pooling")
+            print(f"Student '{student}' added to the ride pooling.")
+    
+    # Simulating ETA calculation (replace with actual logic if needed)
+    eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
+    print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes")
+    
+    print(f"Ride pooling booked successfully! Cost per student: ${cost:.2f}")
 
 def rate_driver(driver_id):
     try:
