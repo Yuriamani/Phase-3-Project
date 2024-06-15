@@ -33,3 +33,21 @@ class Driver:
         conn.commit()
         conn.close()
         print("Driver deleted successfully.")
+
+    @staticmethod
+    def rate_driver(driver_id, rating):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        try:
+            # Update the driver's rating in the database
+            cursor.execute("UPDATE drivers SET rating = ? WHERE id = ?", (rating, driver_id))
+            conn.commit()
+            print(f"Driver with ID {driver_id} rated successfully!")
+
+        except Exception as e:
+            conn.rollback()
+            print(f"Error: {e}")
+
+        finally:
+            conn.close()    

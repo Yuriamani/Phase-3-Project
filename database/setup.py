@@ -10,7 +10,8 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             contact TEXT NOT NULL,
-            vehicle TEXT NOT NULL
+            vehicle TEXT NOT NULL,
+            rating REAL 
         )
     ''')
     cursor.execute('''

@@ -5,6 +5,7 @@ from models.book_ride import Booking
 from colorama import Fore, Style
 colorama.init()
 import readline
+import random
 
 inputs = []
 
@@ -47,8 +48,8 @@ def display_menu():
     choice = 0
 
     menu_options = [
-    (1, Fore.BLUE, "Add Driver", add_driver),
-    (2, Fore.BLUE, "Book Ride", book_ride),
+    (1, Fore.BLUE, "Register as a Driver", add_driver),
+    (2, Fore.BLUE, "Instant Ride Requests", book_ride),
     (3, Fore.BLUE, "Display Drivers", display_drivers),
     (4, Fore.BLUE, "Display Bookings", display_bookings),
     (5, Fore.RED, "Delete Driver", delete_driver),
@@ -68,11 +69,13 @@ def display_menu():
                 choice = int(get_input("\nEnter your choice: "))
                 # Find the chosen option in the menu_options list
                 selected_option = next((opt for opt in menu_options if opt[0] == choice), None)
+                
 
                 if not selected_option:
                     print("Invalid choice. Please try again.")   
                 else:    
                     selected_option[3]()
+                    
        
         except ValueError:
             print("Invalid input. Please enter a number.")
@@ -104,18 +107,60 @@ def add_driver():
    
 
 def book_ride():
-    driver_id = int(get_input(Fore.CYAN + "Enter driver's ID: "+ Style.RESET_ALL))
-    student_name = get_input(Fore.CYAN +"Enter student's name: "+ Style.RESET_ALL)
-    pick_up = get_input(Fore.CYAN +"Enter pick-up location: "+ Style.RESET_ALL)
-    drop_off = get_input(Fore.CYAN +"Enter drop-off location: "+ Style.RESET_ALL)
-    Booking.book_ride(driver_id, student_name, pick_up, drop_off)
-    print("Ride booked successfully!")
+    try:
+        print(Fore.GREEN + "===== Booking a Ride =====" + Style.RESET_ALL)
+        student_name = get_input(Fore.CYAN + "Enter student's name: " + Style.RESET_ALL)
+        pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
+        drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
+
+        # Simulating random driver assignment (replace with actual logic if needed)
+        drivers = Driver.get_all()
+        if drivers:
+            selected_driver = random.choice(drivers)
+            driver_id = selected_driver['id']
+            # Assuming Booking.book_ride handles the database interaction
+            Booking.book_ride(driver_id, student_name, pick_up, drop_off)
+            print(f"Driver assigned: {selected_driver['name']}")
+
+        # Simulating ETA calculation (replace with actual logic if needed)
+        eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
+        print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes")
+
+        
+        print("Ride booked successfully!")
+
+        # Ask user to rate the driver
+        rate_driver(driver_id)
+
+    except ValueError:
+        print("Invalid input. Please enter a valid driver ID.")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+def rate_driver(driver_id):
+    try:
+        rating = int(get_input("Rate the driver (1-5 stars): "))
+        if rating < 1 or rating > 5:
+            print("Invalid rating. Please enter a number between 1 and 5.")
+            return
+
+        # Assuming Driver.rate_driver updates the driver's rating in the database
+        Driver.rate_driver(driver_id, rating)
+        print("Driver rated successfully!")
+    except ValueError:
+        print("Invalid input. Please enter a valid number.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def display_drivers():
-    drivers = Driver.get_all()
-    print(Fore.GREEN + "Drivers:" + Style.RESET_ALL)
-    for driver in drivers:
-        print(f"ID: {driver['id']}\t| Name: {driver['name']}\t| Contact: {driver['contact']}\t| Vehicle: {driver['vehicle']}")
+    try:
+        drivers = Driver.get_all()
+        print(Fore.GREEN + "Drivers:" + Style.RESET_ALL)
+        for driver in drivers:
+            print(f"ID: {driver['id']}\t| Name: {driver['name']}\t| Vehicle: {driver['vehicle']}\t| Rating: {driver['rating']}")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def display_bookings():
     bookings = Booking.get_all()
