@@ -4,7 +4,6 @@ from models.display_drivers import Driver
 from models.book_ride import Booking
 from colorama import Fore, Style
 colorama.init()
-import readline
 import random
 
 inputs = []
@@ -98,7 +97,8 @@ def add_driver():
     name = get_input(Fore.CYAN +"Enter driver's name: "+ Style.RESET_ALL)
     contact = get_input(Fore.CYAN +"Enter driver's contact: "+ Style.RESET_ALL)
     vehicle = get_input(Fore.CYAN +"Enter driver's vehicle: "+ Style.RESET_ALL)
-    Driver.add_driver(name, contact, vehicle)
+    driver1 = Driver(name, contact, vehicle)
+    driver1.save()
     print("Driver added successfully!")
    
 def book_ride():
@@ -114,10 +114,11 @@ def book_ride():
         drivers = Driver.get_all()
         if drivers:
             selected_driver = random.choice(drivers)
-            driver_id = selected_driver['id']
+            driver_id = selected_driver[0]
             # Assuming Booking.book_ride handles the database interaction
-            Booking.book_ride(driver_id, student_name, pick_up, drop_off,cost, "individual")
-            print(f"Driver assigned: {selected_driver['name']}")
+            booking1 = Booking(driver_id, student_name, pick_up, drop_off, cost, "individual")
+            booking1.save()
+            print(f"Driver assigned: {selected_driver[1]}")
         # Simulating ETA calculation (replace with actual logic if needed)
         eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
         print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride booked successfully! Cost: ${cost:.2f}")
@@ -149,16 +150,18 @@ def book_ride_pooling():
     drivers = Driver.get_all()
     if drivers:
         selected_driver = random.choice(drivers)
-        driver_id = selected_driver['id']
+        driver_id = selected_driver[0]
         # Assuming Booking.book_ride handles the database interaction
-        print(f"Driver assigned: {selected_driver['name']}")
+        print(f"Driver assigned: {selected_driver[1]}")
         # Book the ride for each student in the list
         for student in students:
-            Booking.book_ride(driver_id, student, pick_up, drop_off, cost, "pooling")
+            booking2 = Booking(driver_id, student_name, pick_up, drop_off,cost, "individual")
+            booking2.save()
             print(f"Student '{student}' added to the ride pooling.")
     # Simulating ETA calculation (replace with actual logic if needed)
     eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
     print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride pooling booked successfully! Cost per student: ${cost:.2f}")
+    rate_driver(driver_id)
 
 def rate_driver(driver_id):
     while True:    
@@ -170,26 +173,23 @@ def rate_driver(driver_id):
                 print("Driver rated successfully!")
                 break
             else:
-                    print("Invalid rating. Please enter a number between 0.0 and 5.0.")    
+                    print("Invalid rating. Please enter a number between 0 and 5")    
         except ValueError:
             print("Invalid input. Please enter a valid number.")
         except Exception as e:
             print(f"Error: {e}")
 
 def display_drivers():
-    try:
-        drivers = Driver.get_all()
-        print(Fore.GREEN + "Drivers:" + Style.RESET_ALL)
-        for driver in drivers:
-            print(f"ID: {driver['id']}\t| Name: {driver['name']}\t| Vehicle: {driver['vehicle']}\t| Rating: {driver['rating']}")
-    except Exception as e:
-        print(f"Error: {e}")
+    drivers = Driver.get_all()
+    print(Fore.GREEN + "Drivers:" + Style.RESET_ALL)
+    for driver in drivers:
+        print(f"ID: {driver[0]}\t| Name: {driver[1]}\t| Vehicle: {driver[3]}\t| Rating: {driver[4]}")
 
 def display_bookings():
     bookings = Booking.get_all()
     print(Fore.GREEN + "Bookings:" + Style.RESET_ALL)
     for booking in bookings:
-        print(f"ID: {booking['id']}\t| Driver ID: {booking['driver_id']}\t| Student Name: {booking['student_name']}\t| Pick-up: {booking['pick_up']}\t| Drop-off: {booking['drop_off']}")
+        print(f"ID: {booking[0]}\t| Driver ID: {booking[1]}\t| Student Name: {booking[2]}\t| Pick-up: {booking[3]}\t| Drop-off: {booking[4]}")
 
 
 

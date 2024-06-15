@@ -1,10 +1,11 @@
-from .connection import get_db_connection
+import sqlite3
+
+conn = sqlite3.connect('./database/schoolride.db')
+conn.row_factory = sqlite3.Row
+cursor = conn.cursor()
 
 def create_tables():
-    
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS drivers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,6 +15,7 @@ def create_tables():
             rating REAL 
         )
     ''')
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS bookings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
