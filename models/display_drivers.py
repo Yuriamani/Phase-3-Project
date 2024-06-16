@@ -31,9 +31,10 @@ class Driver:
         for driver in drivers:
             print(f"ID: {driver[0]}\t| Name: {driver[1]}\t| Vehicle: {driver[3]}\t| Rating: {driver[4]}")
 
-    
+    #Remove drivers registration
     @classmethod
-    def delete_driver(cls,driver_id):
+    def delete_driver(cls):
+        driver_id = input("Enter driver's ID to delete: ")
         cursor.execute("DELETE FROM drivers WHERE id = ?", (driver_id,))
         conn.commit()
         print("Driver deleted successfully.")

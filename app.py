@@ -46,10 +46,8 @@ def exited():
     print("Exiting...")
     exit()      
 
-#Remove drivers registration
-def delete_driver():
-    driver_id = input("Enter driver's ID to delete: ")
-    Driver.delete_driver(driver_id)
+
+
 
 #Delete a booking
 def delete_booking():
@@ -140,7 +138,7 @@ def main():
     (2, Fore.BLUE, "Instant Ride Requests", book_ride),
     (3, Fore.RED, "Display Drivers", Driver.display_drivers),
     (4, Fore.RED, "Display Bookings", display_bookings),
-    (5, Fore.RED, "Delete Driver", delete_driver),
+    (5, Fore.RED, "Delete Driver", Driver.delete_driver),
     (6, Fore.RED, "Delete Booking", delete_booking),
     (7, Fore.RED, "Exit", exited),
     (8, Fore.YELLOW, "Book Ride (Ride Pooling)", book_ride_pooling)  # Option for ride pooling
