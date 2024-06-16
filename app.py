@@ -47,20 +47,6 @@ def exited():
     exit()      
 
 
-
-
-#Delete a booking
-def delete_booking():
-    booking_id = input("Enter booking ID to delete: ")
-    Booking.delete_booking(booking_id)    
-
-
-
-
-
-
-
-
 def main():
     create_tables()  # Create tables before interacting with them
     
@@ -73,7 +59,7 @@ def main():
     (3, Fore.RED, "Display Drivers", Driver.display_drivers),
     (4, Fore.RED, "Display Bookings", Booking.display_bookings),
     (5, Fore.RED, "Delete Driver", Driver.delete_driver),
-    (6, Fore.RED, "Delete Booking", delete_booking),
+    (6, Fore.RED, "Delete Booking", Booking.delete_booking),
     (7, Fore.RED, "Exit", exited),
     (8, Fore.YELLOW, "Book Ride (Ride Pooling)", Booking.book_ride_pooling)  # Option for ride pooling
 ]

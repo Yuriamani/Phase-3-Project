@@ -95,9 +95,10 @@ class Booking:
         for booking in bookings:
             print(f"ID: {booking[0]}\t| Driver ID: {booking[1]}\t| Student Name: {booking[2]}\t| Pick-up: {booking[3]}\t| Drop-off: {booking[4]}")
 
-    
+    #Delete a booking
     @classmethod
-    def delete_booking(cls,booking_id):
+    def delete_booking(cls):
+        booking_id = input("Enter booking ID to delete: ")
         cursor.execute("DELETE FROM bookings WHERE id = ?", (booking_id,))
         conn.commit()
         print("Booking deleted successfully.")
