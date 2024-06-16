@@ -1,41 +1,55 @@
 # Phase-3-Project
 
-# SchoolRide
+# SchoolRide CLI Application
 
-SchoolRide is a command-line interface (CLI) application designed to manage transportation services for students. It allows users to add drivers, book rides, display driver and booking information, delete drivers or bookings, and exit the program.
+SchoolRide is a command-line interface (CLI) application designed to manage transportation services for students. It offers functionalities to register drivers, manage ride bookings, and display relevant information about drivers and bookings. The application is built with simplicity and user-friendliness in mind, aiming to provide a seamless experience for users involved in school transportation management.
 
 ## Features
 
-1. **Add Driver**:
-   - Collects and stores information about new drivers, including name, contact, and vehicle details.
+- **Driver Management:**
+  - Register new drivers.
+  - Display existing drivers.
+  - Delete drivers from the system.
 
-2. **Book Ride**:
-   - Allows users to book rides by specifying driver ID, student name, pick-up location, and drop-off location.
+- **Booking Management:**
+  - Book instant rides.
+  - Display current bookings.
+  - Delete bookings as needed.
+  - Book rides with pooling options for cost efficiency.
 
-3. **Display Drivers**:
-   - Retrieves and displays a list of all registered drivers, including their IDs, names, contact details, and vehicles.
+- **User Interface:**
+  - Color-coded interface using Colorama for better user experience.
+  - Interactive menu system for easy navigation.
 
-4. **Display Bookings**:
-   - Retrieves and displays a list of all bookings made, including booking IDs, driver IDs, student names, pick-up locations, and drop-off locations.
+## Installation
 
-5. **Delete Driver**:
-   - Allows users to delete a driver from the database by entering the driver's ID.
+To run SchoolRide on your local machine, follow these steps:
 
-6. **Delete Booking**:
-   - Allows users to delete a booking from the database by entering the booking ID.
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd SchoolRide
 
-7. **Exit**:
-   - Terminates the program and exits gracefully.
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
 
-## Technical Details
+3. **Initialize the database:**
+   ```bash
+   python -m database.setup
 
-### Implementation
+Usage
+Run the application:
 
-- **Colorama**: Used for colorizing text output in the terminal for improved readability.
-- **Readline**: Enables enhanced input handling, including catching interrupts like Ctrl+C.
-- **Database Setup**: Utilizes PostgreSQL via the `create_tables` function to initialize database tables.
-- **Models**: Interacts with `Driver` and `Booking` models to perform CRUD operations.
-- **Exception Handling**: Implemented to manage errors and user interruptions gracefully.
+bash
+Copy code
+python main.py
+Follow the on-screen instructions to navigate through the menu and use the application:
+
+Upon running the application, you will be presented with a menu displaying various options.
+Use the number keys to select an option and press Enter.
+Depending on the chosen option, follow the prompts to register drivers, book rides, display information, or exit the application.
+For any unexpected behavior or errors, refer to the error messages displayed for troubleshooting.
 
 ### Usage
 
