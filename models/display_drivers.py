@@ -1,4 +1,7 @@
 import sqlite3
+import colorama
+from colorama import Fore, Style
+colorama.init()
 conn = sqlite3.connect('./database/schoolride.db')
 cursor = conn.cursor()
 
@@ -8,15 +11,26 @@ class Driver:
         self.contact = contact
         self.vehicle = vehicle
 
-    def save(self):
-        cursor.execute("INSERT INTO drivers (name, contact, vehicle) VALUES (?, ?, ?)", (self.name, self.contact, self.vehicle))
-        conn.commit()
-       
+    # Register driver
     @classmethod
-    def get_all(cls):
+    def add_driver(cls):
+        print(Fore.GREEN + "===== Driver's Registration =====" + Style.RESET_ALL)
+        name = input(Fore.CYAN +"Enter driver's name: "+ Style.RESET_ALL)
+        contact = input(Fore.CYAN +"Enter driver's contact: "+ Style.RESET_ALL)
+        vehicle = input(Fore.CYAN +"Enter driver's vehicle: "+ Style.RESET_ALL)
+        cursor.execute("INSERT INTO drivers (name, contact, vehicle) VALUES (?, ?, ?)", (name, contact, vehicle))
+        conn.commit()
+        print("Driver added successfully!")
+
+    #Display drivers   
+    @classmethod
+    def display_drivers(cls):
         cursor.execute("SELECT * FROM drivers")
         drivers = cursor.fetchall()
-        return drivers
+        print(Fore.GREEN + "Drivers:" + Style.RESET_ALL)
+        for driver in drivers:
+            print(f"ID: {driver[0]}\t| Name: {driver[1]}\t| Vehicle: {driver[3]}\t| Rating: {driver[4]}")
+
     
     @classmethod
     def delete_driver(cls,driver_id):

@@ -6,40 +6,40 @@ from colorama import Fore, Style
 colorama.init()
 import random
 
-inputs = []
+# inputs = []
 
-def get_input(prompt):
-    while True:
-        try:
-            user_input = input(prompt)
-            inputs.append(user_input)
-            return user_input
-        except KeyboardInterrupt:
-            print("\nKeyboardInterrupt")
-            try:
-                # Ask user to confirm exit
-                user_choice = input("Press 'Enter' again to exit, type 'back' to go back, or enter any other key to continue: ")
-                if user_choice == 'back':
-                    handle_ctrl_c()
-                elif user_choice == '':
-                    print("Exiting...")
-                    print("Program Terminated.")
-                    exit()
+# def get_input(prompt):
+#     while True:
+#         try:
+#             user_input = input(prompt)
+#             inputs.append(user_input)
+#             return user_input
+#         except KeyboardInterrupt:
+#             print("\nKeyboardInterrupt")
+#             try:
+#                 # Ask user to confirm exit
+#                 user_choice = input("Press 'Enter' again to exit, type 'back' to go back, or enter any other key to continue: ")
+#                 if user_choice == 'back':
+#                     handle_ctrl_c()
+#                 elif user_choice == '':
+#                     print("Exiting...")
+#                     print("Program Terminated.")
+#                     exit()
 
-                else:
-                    print("\nContinuing...")
-            except KeyboardInterrupt:
-                print("\nContinuing...")
-            except Exception as e:
-                print(f"Error: {e}")   
-        except Exception as e:
-            print(f"Error: {e}")   
+#                 else:
+#                     print("\nContinuing...")
+#             except KeyboardInterrupt:
+#                 print("\nContinuing...")
+#             except Exception as e:
+#                 print(f"Error: {e}")   
+#         except Exception as e:
+#             print(f"Error: {e}")   
                 
-def handle_ctrl_c():
-    if inputs:
-        edited_input = input(f"Edit your input: [{inputs[-1]}] ")
-        inputs[-1] = edited_input
-        print("Input edited successfully!")  
+# def handle_ctrl_c():
+#     if inputs:
+#         edited_input = input(f"Edit your input: [{inputs[-1]}] ")
+#         inputs[-1] = edited_input
+#         print("Input edited successfully!")  
 
 #program Terminated          
 def exited():
@@ -56,23 +56,13 @@ def delete_booking():
     booking_id = input("Enter booking ID to delete: ")
     Booking.delete_booking(booking_id)    
 
-# Register driver
-def add_driver():
-    print(Fore.GREEN + "===== Driver's Registration =====" + Style.RESET_ALL)
-    name = get_input(Fore.CYAN +"Enter driver's name: "+ Style.RESET_ALL)
-    contact = get_input(Fore.CYAN +"Enter driver's contact: "+ Style.RESET_ALL)
-    vehicle = get_input(Fore.CYAN +"Enter driver's vehicle: "+ Style.RESET_ALL)
-    driver1 = Driver(name, contact, vehicle)
-    driver1.save()
-    print("Driver added successfully!")
-
 #Boook a ride   
 def book_ride():
     try:
         print(Fore.GREEN + "===== Booking a Ride =====" + Style.RESET_ALL)
-        student_name = get_input(Fore.CYAN + "Enter student's name: " + Style.RESET_ALL)
-        pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
-        drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
+        student_name = input(Fore.CYAN + "Enter student's name: " + Style.RESET_ALL)
+        pick_up = input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
+        drop_off = input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
         
         generate_random_cost = lambda: random.uniform(10.0, 50.0) # Function to generate random cost within a specified range
         cost = generate_random_cost() # Generate a random cost for the ride
@@ -101,13 +91,13 @@ def book_ride_pooling():
     students = []
     # Allow the user to input multiple students
     while True:
-        student_name = get_input(Fore.CYAN + "Enter student's name (or 'done' to finish): " + Style.RESET_ALL)
+        student_name = input(Fore.CYAN + "Enter student's name (or 'done' to finish): " + Style.RESET_ALL)
         if student_name.lower() == 'done':
             break
         students.append(student_name)
     
-    pick_up = get_input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
-    drop_off = get_input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
+    pick_up = input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
+    drop_off = input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
      
     generate_random_cost = lambda: random.uniform(10.0, 50.0) # Function to generate random cost within a specified range
     
@@ -130,13 +120,6 @@ def book_ride_pooling():
     Driver.rate_driver(driver_id) # Ask users to rate the driver
 
 
-#Display drivers
-def display_drivers():
-    drivers = Driver.get_all()
-    print(Fore.GREEN + "Drivers:" + Style.RESET_ALL)
-    for driver in drivers:
-        print(f"ID: {driver[0]}\t| Name: {driver[1]}\t| Vehicle: {driver[3]}\t| Rating: {driver[4]}")
-
 #Display bookings
 def display_bookings():
     bookings = Booking.get_all()
@@ -153,9 +136,9 @@ def main():
     choice = 0
 
     menu_options = [
-    (1, Fore.RED, "Register as a Driver", add_driver),
+    (1, Fore.RED, "Register as a Driver", Driver.add_driver),
     (2, Fore.BLUE, "Instant Ride Requests", book_ride),
-    (3, Fore.RED, "Display Drivers", display_drivers),
+    (3, Fore.RED, "Display Drivers", Driver.display_drivers),
     (4, Fore.RED, "Display Bookings", display_bookings),
     (5, Fore.RED, "Delete Driver", delete_driver),
     (6, Fore.RED, "Delete Booking", delete_booking),
@@ -172,7 +155,7 @@ def main():
             print('"To go back or exit \'ctrl c\'."\n')
 
             while True:    
-                choice = int(get_input("\nEnter your choice: "))
+                choice = int(input("\nEnter your choice: "))
                 # Find the chosen option in the menu_options list
                 selected_option = next((opt for opt in menu_options if opt[0] == choice), None)
                 if not selected_option:
