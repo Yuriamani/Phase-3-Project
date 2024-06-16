@@ -54,76 +54,10 @@ def delete_booking():
     booking_id = input("Enter booking ID to delete: ")
     Booking.delete_booking(booking_id)    
 
-#Boook a ride   
-def book_ride():
-    try:
-        print(Fore.GREEN + "===== Booking a Ride =====" + Style.RESET_ALL)
-        student_name = input(Fore.CYAN + "Enter student's name: " + Style.RESET_ALL)
-        pick_up = input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
-        drop_off = input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
-        
-        generate_random_cost = lambda: random.uniform(10.0, 50.0) # Function to generate random cost within a specified range
-        cost = generate_random_cost() # Generate a random cost for the ride
-        
-        drivers = Driver.get_all()
-        if drivers:
-            selected_driver = random.choice(drivers)#Assighning a driver
-            driver_id = selected_driver[0] #'id'
-            booking1 = Booking(driver_id, student_name, pick_up, drop_off, cost, "individual")
-            booking1.save()
-            print(f"Driver assigned: {selected_driver[1]}")
-        # Simulating ETA calculation (replace with actual logic if needed)
-        eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
-        print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride booked successfully! Cost: ${cost:.2f}")
-        
-        Driver.rate_driver(driver_id)# Ask user to rate the driver
-
-    except ValueError:
-        print("Invalid input. Please enter a valid driver ID.")
-    except Exception as e:
-        print(f"Error: {e}")
-
-#Book ride pooling
-def book_ride_pooling():
-    
-    students = []
-    # Allow the user to input multiple students
-    while True:
-        student_name = input(Fore.CYAN + "Enter student's name (or 'done' to finish): " + Style.RESET_ALL)
-        if student_name.lower() == 'done':
-            break
-        students.append(student_name)
-    
-    pick_up = input(Fore.CYAN + "Enter pick-up location: " + Style.RESET_ALL)
-    drop_off = input(Fore.CYAN + "Enter drop-off location: " + Style.RESET_ALL)
-     
-    generate_random_cost = lambda: random.uniform(10.0, 50.0) # Function to generate random cost within a specified range
-    
-    cost = generate_random_cost()  # Generate a random cost for the ride pooling
-    
-    drivers = Driver.get_all()
-    if drivers:
-        selected_driver = random.choice(drivers) #Assighning a driver
-        driver_id = selected_driver[0] #'id'
-        print(f"Driver assigned: {selected_driver[1]}")
-        # Book the ride for each student in the list
-        for student in students:
-            booking2 = Booking(driver_id, student, pick_up, drop_off,cost, "individual")
-            booking2.save()
-            print(f"Student '{student}' added to the ride pooling.")
-    # Simulating ETA calculation (replace with actual logic if needed)
-    eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
-    print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride pooling booked successfully! Cost per student: ${cost:.2f}")
-    
-    Driver.rate_driver(driver_id) # Ask users to rate the driver
 
 
-#Display bookings
-def display_bookings():
-    bookings = Booking.get_all()
-    print(Fore.GREEN + "Bookings:" + Style.RESET_ALL)
-    for booking in bookings:
-        print(f"ID: {booking[0]}\t| Driver ID: {booking[1]}\t| Student Name: {booking[2]}\t| Pick-up: {booking[3]}\t| Drop-off: {booking[4]}")
+
+
 
 
 
@@ -135,13 +69,13 @@ def main():
 
     menu_options = [
     (1, Fore.RED, "Register as a Driver", Driver.add_driver),
-    (2, Fore.BLUE, "Instant Ride Requests", book_ride),
+    (2, Fore.BLUE, "Instant Ride Requests", Booking.book_ride),
     (3, Fore.RED, "Display Drivers", Driver.display_drivers),
-    (4, Fore.RED, "Display Bookings", display_bookings),
+    (4, Fore.RED, "Display Bookings", Booking.display_bookings),
     (5, Fore.RED, "Delete Driver", Driver.delete_driver),
     (6, Fore.RED, "Delete Booking", delete_booking),
     (7, Fore.RED, "Exit", exited),
-    (8, Fore.YELLOW, "Book Ride (Ride Pooling)", book_ride_pooling)  # Option for ride pooling
+    (8, Fore.YELLOW, "Book Ride (Ride Pooling)", Booking.book_ride_pooling)  # Option for ride pooling
 ]
     
     while choice != 7 :
