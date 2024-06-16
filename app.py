@@ -88,7 +88,7 @@ def book_ride():
         eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
         print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride booked successfully! Cost: ${cost:.2f}")
         
-        rate_driver(driver_id)# Ask user to rate the driver
+        Driver.rate_driver(driver_id)# Ask user to rate the driver
 
     except ValueError:
         print("Invalid input. Please enter a valid driver ID.")
@@ -127,23 +127,8 @@ def book_ride_pooling():
     eta_minutes = random.randint(5, 30)  # Random ETA between 5 to 30 minutes
     print(f"Estimated Time of Arrival (ETA): {eta_minutes} minutes" + "\n" + f"Ride pooling booked successfully! Cost per student: ${cost:.2f}")
     
-    rate_driver(driver_id) # Ask users to rate the driver
+    Driver.rate_driver(driver_id) # Ask users to rate the driver
 
-#Rate driver
-def rate_driver(driver_id):
-    while True:    
-        try:
-            rating = int(get_input("Rate the driver (1-5 stars): "))
-            if 1 <= rating <= 5:
-                Driver.rate_driver(driver_id, rating)
-                print("Driver rated successfully!")
-                break
-            else:
-                print("Invalid rating. Please enter a number between 1 and 5")    
-        except ValueError:
-            print("Invalid input. Please enter a valid number.")
-        except Exception as e:
-            print(f"Error: {e}")
 
 #Display drivers
 def display_drivers():

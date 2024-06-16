@@ -25,13 +25,27 @@ class Driver:
         print("Driver deleted successfully.")
 
     @classmethod
-    def rate_driver(cls,driver_id, rating):
-        try:
-            # Update the driver's rating in the database
-            cursor.execute("UPDATE drivers SET rating = ? WHERE id = ?", (rating, driver_id))
-            conn.commit()
-            print(f"Driver with ID {driver_id} rated successfully!")
-        except Exception as e:
-            conn.rollback()
-            print(f"Error: {e}")
+    #Rate driver
+    def rate_driver(cls,driver_id):
+        while True:    
+            try:
+                rating = int(input("Rate the driver (1-5 stars): "))
+                if 1 <= rating <= 5:
+                    try:
+                    # Update the driver's rating in the database
+                        cursor.execute("UPDATE drivers SET rating = ? WHERE id = ?", (rating, driver_id))
+                        conn.commit()
+                        print(f"Driver with ID {driver_id} rated successfully!")
+                    except Exception as e:
+                        conn.rollback()
+                        print(f"Error: {e}")
+                
+                    print("Driver rated successfully!")
+                    break
+                else:
+                    print("Invalid rating. Please enter a number between 1 and 5")    
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+            except Exception as e:
+                print(f"Error: {e}")
                
