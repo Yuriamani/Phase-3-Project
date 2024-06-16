@@ -34,6 +34,4 @@ class Driver:
         except Exception as e:
             conn.rollback()
             print(f"Error: {e}")
-        finally:
-            conn.close()
                
