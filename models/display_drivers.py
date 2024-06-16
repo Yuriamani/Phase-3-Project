@@ -39,8 +39,8 @@ class Driver:
         conn.commit()
         print("Driver deleted successfully.")
 
-    @classmethod
     #Rate driver
+    @classmethod
     def rate_driver(cls,driver_id):
         while True:    
             try:
