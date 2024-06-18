@@ -1,7 +1,8 @@
 # Phase-3-Project
 
 ### Short Video Review Of The Full App
-[file](<../../../Videos/Screencasts/CLI App.zip>)
+/home/yuri/Downloads/Screencast from 06-17-2024 06_35_31 PM (1).zip
+[video](<../../../Downloads/Screencast from 06-17-2024 06_35_31 PM (1).webm>)
 
 # SchoolRide CLI Application
 
